@@ -2,7 +2,6 @@
     import { untrack } from 'svelte';
     import AbstractMatrix from './lib/AbstractMatrix.svelte';
     import EditableMatrix from './lib/EditableMatrix.svelte';
-    import convert from 'color-convert';
     import ReadonlyMatrix from './lib/ReadonlyMatrix.svelte';
     import Join from './lib/Join.svelte';
 
