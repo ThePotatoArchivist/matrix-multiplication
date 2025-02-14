@@ -9,7 +9,7 @@
 <AbstractMatrix {values}>
     {#snippet children(value, row, column)}
         {#if boolean}
-            <input type="checkbox" value={value !== 0} oninput={event => values[row][column] = event.currentTarget.checked ? 1 : 0} />
+            <input type="checkbox" checked={value !== 0} oninput={event => values[row][column] = event.currentTarget.checked ? 1 : 0} />
         {:else}
             <input type="number" bind:value={values[row][column]} />
         {/if}
