@@ -150,6 +150,7 @@
         font-size: 0.75em;
         display: flex;
         flex-direction: row;
+        align-items: center;
         gap: 0.25em;
     }
 </style>

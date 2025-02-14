@@ -9,6 +9,3 @@
         {value}
     {/snippet}
 </AbstractMatrix>
-
-<style>
-</style>
