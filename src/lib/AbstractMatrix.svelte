@@ -23,7 +23,7 @@
 
     .bracket {
         width: 0.3em;
-        border: 1px solid currentColor;
+        border: 2px solid currentColor;
     }
 
     .bracket.left {
