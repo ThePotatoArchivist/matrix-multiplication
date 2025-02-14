@@ -4,6 +4,7 @@
     import EditableMatrix from './lib/EditableMatrix.svelte';
     import ReadonlyMatrix from './lib/ReadonlyMatrix.svelte';
     import Join from './lib/Join.svelte';
+    import NumberCheckbox from './lib/NumberCheckbox.svelte';
 
     function range(size: number) {
         return [...Array(size)].map((_, index) => index)
@@ -18,6 +19,8 @@
             ? values
             : repeat(height, row => repeat(width, col => row in values && col in values[row] ? values[row][col] : defaultValue))
     }
+
+    let boolean = $state(false)
 
     let matrix1Height = $state(2)
     let matrixShared = $state(2)
@@ -40,7 +43,20 @@
     let colors = $derived(repeat(matrixShared, index => index * 360 / matrixShared).map(hue => `hsl(${hue}deg 70% 50% / 30%)`))
 </script>
 
+{#snippet matrixValue(value: number)}
+    {#if boolean}
+        <input type="checkbox" checked={value !== 0} disabled />
+    {:else}
+        {value}
+    {/if}
+{/snippet}
+
 <main>
+    <label class="info">
+        <input type="checkbox" bind:checked={boolean} />
+        Boolean Mode
+    </label>
+
     <div class="multiply">
 
         <div class="dimensions">
@@ -48,7 +64,7 @@
             &times;
             <input type="number" min={1} bind:value={matrix1Height} />
         </div>
-        <EditableMatrix bind:values={matrix1} />
+        <EditableMatrix bind:values={matrix1} {boolean} />
 
         <div class="empty"></div>
         <div class="symbol">&times;</div>
@@ -58,12 +74,12 @@
             &times;
             <input type="number" min={1} bind:value={matrixShared} />
         </div>
-        <EditableMatrix bind:values={matrix2} />
+        <EditableMatrix bind:values={matrix2} {boolean} />
 
         <div class="empty" style:grid-column="span 2"></div>
         <div class="symbol">=</div>
 
-        <ReadonlyMatrix values={matrixResult} />
+        <ReadonlyMatrix values={matrixResult} {boolean} />
 
     </div>
 
@@ -72,7 +88,9 @@
 
         <AbstractMatrix values={matrix2}>
             {#snippet children(value, row, _)}
-                <span class="highlight" style:background-color={colors[row]}>{value}</span>
+                <span class="highlight" style:background-color={colors[row]}>
+                    {@render matrixValue(value)}
+                </span>
             {/snippet}
         </AbstractMatrix>
 
@@ -80,7 +98,9 @@
 
         <AbstractMatrix values={matrix1}>
             {#snippet children(value, _, col)}
-            <span class="highlight" style:background-color={colors[col]}>{value}</span>
+                <span class="highlight" style:background-color={colors[col]}>
+                    {@render matrixValue(value)}
+                </span>
             {/snippet}
         </AbstractMatrix>
 
@@ -90,7 +110,7 @@
                     {#snippet join()}{' + '}{/snippet}
                     {#snippet children(index)}
                         <span class="highlight" style:background-color={colors[index]}>
-                            {matrix1[row]?.[index] ?? 0} &sdot; {matrix2[index]?.[col] ?? 0}
+                            {@render matrixValue(matrix1[row]?.[index] ?? 0)} &sdot; {@render matrixValue(matrix2[index]?.[col] ?? 0)}
                         </span>
                     {/snippet}
                 </Join>
@@ -99,7 +119,7 @@
 
         <span class="symbol">=</span>
 
-        <ReadonlyMatrix values={matrixResult} />
+        <ReadonlyMatrix values={matrixResult} {boolean} />
 
     </div>
 </main>
@@ -112,6 +132,10 @@
     input {
         width: 1em;
         text-align: center;
+    }
+
+    input[type="checkbox"] {
+        height: 1em;
     }
 
     .multiply {
@@ -151,5 +175,13 @@
         flex-direction: row;
         align-items: center;
         gap: 0.25em;
+    }
+
+    .info {
+        font-size: 0.67em;
+    }
+
+    label {
+        user-select: none;
     }
 </style>
