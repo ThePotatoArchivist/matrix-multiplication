@@ -60,9 +60,9 @@
     <div class="multiply">
 
         <div class="dimensions">
-            <input type="number" min={1} bind:value={matrixShared} />
-            &times;
             <input type="number" min={1} bind:value={matrix1Height} />
+            &times;
+            <input type="number" min={1} bind:value={matrixShared} />
         </div>
         <EditableMatrix bind:values={matrix1} {boolean} />
 
@@ -70,9 +70,9 @@
         <div class="symbol">&times;</div>
 
         <div class="dimensions">
-            <input type="number" min={1} bind:value={matrix2Width} />
-            &times;
             <input type="number" min={1} bind:value={matrixShared} />
+            &times;
+            <input type="number" min={1} bind:value={matrix2Width} />
         </div>
         <EditableMatrix bind:values={matrix2} {boolean} />
 
